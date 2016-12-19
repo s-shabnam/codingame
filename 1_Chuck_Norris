@@ -1,0 +1,31 @@
+import java.util.*;
+import java.io.*;
+import java.math.*;
+
+/**
+ * Auto-generated code below aims at helping you parse
+ * the standard input according to the problem statement.
+ **/
+class Solution {
+    
+    public static void main(String args[]) {
+        Scanner in = new Scanner(System.in);
+        String MESSAGE = in.nextLine();
+        String answer = "";
+        String bitList = "";
+        for(int i = 0; i < MESSAGE.length(); i++){
+            String text = MESSAGE.substring(i, i+1);
+            bitList +=  new BigInteger(text.getBytes()).toString(2);
+        }
+        System.err.println("BitList = " + bitList);
+        answer =  bitList.charAt(0) == '1'? "0 0": "00 0";
+        for (int i = 1; i < bitList.length(); i++ ){
+            if(bitList.charAt(i) != bitList.charAt(i-1)){
+                answer +=  bitList.charAt(i) == '1'? " 0 0": " 00 0";
+            }
+            else answer += "0";
+        }
+
+        System.out.println(answer);
+    }
+}
