@@ -12,16 +12,17 @@ class Solution {
         //initialisation of variables
         Scanner in = new Scanner(System.in);
         int n = in.nextInt(); // the number of cards for player 1
+        
         String[] warCards ;
         List<String> refWarCards = new ArrayList<String>();
         List<String> tmpWarCards = new ArrayList<String>();
         Queue playerN = new LinkedList();
         Queue playerM = new LinkedList();
+        
         int round = 0;
         int winnerNumner = 0;
-        int playerNRouds = 0;
-        int playerMRouds = 0;
         boolean pat = false;
+        
         //creation of the list of all cards
         Map<String, Integer> refCards = new HashMap<String, Integer>();
          for (int i = 0; i < 8; i++) {
@@ -34,27 +35,30 @@ class Solution {
         refCards.put("A", 12);
         
         //first plaer's (1) cards
+        System.err.print("Player 1 cards : ");
         for (int i = 0; i < n; i++) {
             String cardp1 = in.next(); // the n cards of player 1
             playerN.add(cardp1.substring(0, 1));
-            System.err.println("Player 1 cards : " + cardp1 + " ");
+            System.err.print(cardp1 + " ");
         }
-         System.err.println("------------------");
-         
+        System.err.println();
         //second plaer's (2) cards
+        System.err.print("Player 2 cards : ");
         int m = in.nextInt(); // the number of cards for player 2
         for (int i = 0; i < m; i++) {
             String cardp2 = in.next(); // the m cards of player 2
             playerM.add(cardp2.substring(0, 1));
-            System.err.println("Player 2 cards : " + cardp2 + " ");
+            System.err.print(cardp2 + " ");
         }
+        System.err.println();
         System.err.println("------------------");
+        
+        //////////////////////////////////////////////////////////
         
         while((playerN.size() > 0) && (playerM.size() > 0)){
             String cardpN = playerN.remove().toString();
             String cardpM = playerM.remove().toString();
-            
-            Queue winner = null;
+            LinkedList roundWinner = null;
             winnerNumner = 0;
             warCards = new String[8];
             tmpWarCards= new ArrayList<String>();
@@ -65,29 +69,30 @@ class Solution {
             
             // if numbers are not equals there is a winner for this round
             if(indexN != indexM){
-                
+                round++;
                 if(indexN < indexM){
-                   winner =  playerM;
+                   roundWinner = (LinkedList) playerM;
                    winnerNumner = 2;
-                   playerMRouds++;
-                }else if (indexN > indexM){
-                   winner =  playerN;
+                }else{
+                   roundWinner = (LinkedList) playerN;
                    winnerNumner = 1; 
-                   playerNRouds++;
                 }
-                System.err.println("Round : " + round + "; P1 : " + playerNRouds +" <-> P2 : " +playerMRouds+ " (" + cardpN + " - " + cardpM + ")->" + winnerNumner );
-
+                System.err.println("Round : " + round + " round winner size: " + roundWinner.size());
+                System.err.println("; P1 : " + playerN.size() +" <-> P2 : " + playerM.size()+ " (" + cardpN + " - " + cardpM + ")->" + winnerNumner );
+                
                 int longeur = refWarCards.size(); // number of war cards 
                 if (longeur > 0){
-                    for(int i = 0; i < longeur; i++){
-                        if( i == longeur/2 - 1){
-                          winner.add(cardpN);
-                        } 
-                        winner.add(refWarCards.get(i));
+                    for(int i = 0; i < longeur/2; i++){
+                        roundWinner.add(refWarCards.get(i));
                     }  
                 }
-                winner.add(cardpM);
-                round++;
+                roundWinner.add(cardpN);
+                if (longeur > 0){
+                   for(int i = longeur/2; i < longeur; i++){
+                    roundWinner.add(refWarCards.get(i));
+                    }  
+                }
+                roundWinner.add(cardpM);
                 refWarCards= new ArrayList<String>();
             }else{
                 //war card of current round to save in array warCards
@@ -95,12 +100,11 @@ class Solution {
                 warCards[4] = cardpM; 
                 
                 for(int i = 1; i<4; i++) {
-                    if((playerN.size() > 0) && (playerM.size() > 0)){
-                       warCards[i] = playerN.remove().toString(); 
-                       warCards[i+4] = playerM.remove().toString();
-                    } else{
+                    if((playerN.size() == 0)||(playerM.size() == 0)){
                         pat = true;
-                        break;
+                    } else{
+                        warCards[i] = playerN.remove().toString(); 
+                        warCards[i+4] = playerM.remove().toString();
                     }
                 }
                 System.err.println("War Cards of current round : ");
@@ -126,11 +130,18 @@ class Solution {
                } 
                refWarCards = tmpWarCards;
             }
-        } if(!pat){
-            System.out.println(((playerNRouds > playerMRouds)? "1" : "2") + " " + round);
+        }if((playerN.size() == 0)&&(playerM.size() == 0)){
+            pat = true;
+        }
+            
+        if(!pat){
+             if(playerN.size() == 0){
+                System.out.println("2 " + round);
+            } else if(playerM.size() == 0){
+                System.out.println("1 " + round);
+            }
         }else{
             System.out.println("PAT");
         }
-        
     }
 }
