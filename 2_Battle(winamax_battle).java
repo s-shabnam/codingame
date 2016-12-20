@@ -69,6 +69,7 @@ class Solution {
             
             // if numbers are not equals there is a winner for this round
             if(indexN != indexM){
+                round++;
                 if(indexN < indexM){
                    roundWinner = (LinkedList) playerM;
                    winnerNumner = 2;
@@ -78,6 +79,7 @@ class Solution {
                 }
                 System.err.println("Round : " + round + " round winner size: " + roundWinner.size());
                 System.err.println("; P1 : " + playerN.size() +" <-> P2 : " + playerM.size()+ " (" + cardpN + " - " + cardpM + ")->" + winnerNumner );
+                
                 int longeur = refWarCards.size(); // number of war cards 
                 if (longeur > 0){
                     for(int i = 0; i < longeur/2; i++){
@@ -86,12 +88,11 @@ class Solution {
                 }
                 roundWinner.add(cardpN);
                 if (longeur > 0){
-                    for(int i = longeur/2; i < longeur; i++){
-                        roundWinner.add(refWarCards.get(i));
+                   for(int i = longeur/2; i < longeur; i++){
+                    roundWinner.add(refWarCards.get(i));
                     }  
                 }
                 roundWinner.add(cardpM);
-                round++;
                 refWarCards= new ArrayList<String>();
             }else{
                 //war card of current round to save in array warCards
@@ -106,9 +107,6 @@ class Solution {
                         warCards[i+4] = playerM.remove().toString();
                     }
                 }
-                if((playerN.size() == 0)||(playerM.size() == 0)){
-                        break;
-                    }
                 System.err.println("War Cards of current round : ");
                 for(int i = 0; i<warCards.length; i++) {
                    System.err.println(warCards[i]);
