@@ -22,8 +22,6 @@ class Player {
         
         int nextX = 0;
         int nextY = 0;
-        int coefX = 1; // is 1 if we should modify X, 0 else
-        int coefY = 1;
         int stepN_1 = 0;
         int stepN_2 = 0;
         int granularity = 2; 
@@ -37,8 +35,6 @@ class Player {
 
         // game loop
         while (true) {
-            coefX = 1;
-            coefY = 1;
             String bombDir = in.next(); // the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
             int direction = directions.get(bombDir);
            
@@ -49,29 +45,23 @@ class Player {
             if((stepN_2 == direction)&&(stepN_1 == direction)){
                 granularity = 2;
             }
-            if((direction == 0)||(direction == 4)){
-                coefX = 0;
-            }
-            if((direction == 2)||(direction == 6)){
-                coefY = 0;
-            }
             
             //move UP : 
             if((direction < 2)||(direction == 7)){
-                nextY -= coefY*nextY/granularity ;
+                nextY -= nextY/granularity ;
             }
 
             //move Down :
             if((direction > 2)&&(direction < 6)){
-                nextY += coefY*(H - nextY)/granularity;
+                nextY += (H - nextY)/granularity;
             }
             //move right
             if((direction < 4)&&(direction > 0)){
-                nextX += coefX*(W - nextX)/granularity;
+                nextX += (W - nextX)/granularity;
             }
             //move left
             if(direction > 4){
-                nextX -= coefX*nextX/granularity;
+                nextX -= nextX/granularity;
             }
             stepN_2 = stepN_1;
             stepN_1 = direction;
