@@ -1,1 +1,3 @@
-# CodeInGame This repository containes programs for code in game issues
+# CodeInGame 
+
+The repository containes my solutions for some for puzzles from www.codingame.com/
